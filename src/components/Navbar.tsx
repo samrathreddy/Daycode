@@ -19,7 +19,7 @@ export default function Navbar() {
       <div className="container flex h-16 items-center">
         <div className="mr-4 flex items-center">
           <NavLink to="/" className="flex items-center space-x-2">
-            <span className="font-bold text-xl">CodeGeek</span>
+            <span className="font-bold text-xl">DayCode</span>
           </NavLink>
         </div>
         <div className="flex-1">
