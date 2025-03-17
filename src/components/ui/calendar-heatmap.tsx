@@ -9,6 +9,7 @@ import ReactCalendarHeatmap from "react-calendar-heatmap";
 import "react-calendar-heatmap/dist/styles.css";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { Badge } from "@/components/ui/badge";
+import { Link } from "react-router-dom";
 
 interface CalendarHeatmapProps {
   platform: "github" | "leetcode";
@@ -33,7 +34,7 @@ export function CalendarHeatmap({ platform, className }: CalendarHeatmapProps) {
       try {
         if (!username) {
           setData(generateEmptyData());
-          setError(`No ${platform} username found. Please configure in Settings.`);
+          setError(`No ${platform} username found.`);
           return;
         }
         
@@ -356,7 +357,10 @@ export function CalendarHeatmap({ platform, className }: CalendarHeatmapProps) {
       <Alert variant="destructive">
         <AlertCircle className="h-4 w-4" />
         <AlertDescription>
-          {error}
+          No {platform} username found. Please configure in{" "}
+          <Link to="/settings" className="font-medium underline hover:text-primary">
+            Settings
+          </Link>.
         </AlertDescription>
       </Alert>
     );

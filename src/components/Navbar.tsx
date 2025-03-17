@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Home, Settings, Award, Video, CheckSquare, LifeBuoy, Menu, Code } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -8,6 +8,27 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [username, setUsername] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  // Simulating fetching the username
+  useEffect(() => {
+    // Replace this with your actual username fetching logic
+    const fetchUsername = async () => {
+      try {
+        // Example: const response = await api.getUser();
+        // setUsername(response.data.username);
+        
+        // For now, just set it to null to simulate username not found
+        setUsername(null);
+      } catch (error) {
+        console.error("Failed to fetch username:", error);
+        setUsername(null);
+      }
+    };
+    
+    fetchUsername();
+  }, []);
 
   const navItems = [
     { name: "Home", path: "/", icon: Home },
@@ -21,10 +42,10 @@ export default function Navbar() {
 
   return (
     <nav className="border-b bg-background sticky top-0 z-40">
-      <div className="container flex h-16 items-center">
-        <div className="mr-4 flex items-center">
+      <div className="flex h-16 items-center px-4 md:container">
+        <div className="ml-0 md:ml-[-1rem] mr-4 md:mr-10">
           <NavLink to="/" className="flex items-center space-x-2">
-            <span className="font-bold text-xl">DayCode</span>
+            <span className="font-bold text-2xl md:text-3xl">DayCode</span>
           </NavLink>
         </div>
         <div className="flex-1 hidden md:block">
@@ -48,7 +69,7 @@ export default function Navbar() {
             ))}
           </div>
         </div>
-        <div className="flex flex-1 justify-end items-center space-x-2">
+        <div className="flex flex-1 justify-end items-center space-x-2">          
           <ThemeToggle />
           
           <Sheet>
