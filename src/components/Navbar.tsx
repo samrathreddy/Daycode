@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { Home, Settings, Award, Video, CheckSquare, LifeBuoy, Menu } from "lucide-react";
+import { Home, Settings, Award, Video, CheckSquare, LifeBuoy, Menu, Code } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -13,6 +13,7 @@ export default function Navbar() {
     { name: "Home", path: "/", icon: Home },
     { name: "Tasks", path: "/tasks", icon: CheckSquare },
     { name: "Contests", path: "/contests", icon: Award },
+    { name: "Hackathons", path: "/hackathons", icon: Code },
     { name: "Videos", path: "/videos", icon: Video },
     { name: "Settings", path: "/settings", icon: Settings },
     { name: "Help", path: "/help", icon: LifeBuoy }

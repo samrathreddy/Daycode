@@ -10,6 +10,7 @@ import Help from './pages/Help';
 import Tasks from './pages/Tasks';
 import Contest from "./pages/Contest";
 import Videos from "./pages/Videos";
+import Hackathons from "./pages/Hackathons";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient({
@@ -34,6 +35,7 @@ const App = () => (
           <Route path="/tasks" element={<Layout><Tasks /></Layout>} />
           <Route path="/contests" element={<Contest />} />
           <Route path="/videos" element={<Videos />} />
+          <Route path="/hackathons" element={<Layout><Hackathons /></Layout>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
