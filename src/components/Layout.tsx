@@ -5,6 +5,7 @@ import { ThemeToggle } from './ThemeToggle';
 import { Button } from '@/components/ui/button';
 import { Award, Menu, Settings, X } from 'lucide-react';
 import { useState } from 'react';
+import { NightParticles } from './NightParticles';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -21,6 +22,9 @@ function LayoutComponent({ children }: LayoutProps) {
   
   return (
     <div className="flex min-h-screen flex-col">
+      {/* Night particles effect (only visible in dark mode) */}
+      <NightParticles />
+      
       <Navbar />
       <main className="flex-1">{children}</main>
       
