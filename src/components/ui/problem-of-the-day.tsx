@@ -106,9 +106,20 @@ export function ProblemOfTheDay() {
             {problem.difficulty}
           </Badge>
         </div>
-        <span className="text-xs text-muted-foreground">
-          Acceptance: {problem.acceptanceRate}
-        </span>
+        {problem.acceptanceRate && (
+          <Badge 
+            variant="outline" 
+            className={`text-xs ${
+              parseFloat(problem.acceptanceRate) < 35 
+                ? "bg-red-100 text-red-800 border-red-200" 
+                : parseFloat(problem.acceptanceRate) < 60 
+                  ? "bg-blue-100 text-blue-800 border-blue-200" 
+                  : "bg-green-100 text-green-800 border-green-200"
+            }`}
+          >
+            {problem.acceptanceRate}
+          </Badge>
+        )}
       </div>
       
       <p className="text-sm text-muted-foreground">

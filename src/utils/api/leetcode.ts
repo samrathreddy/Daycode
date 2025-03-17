@@ -600,6 +600,13 @@ export async function fetchLeetcodeUserStats(username?: string) {
             reputation
             ranking
           }
+          submitStats {
+            acSubmissionNum {
+              difficulty
+              count
+              submissions
+            }
+          }
         }
         recentSubmissionList(username: $username, limit: $limit) {
           title
@@ -666,7 +673,24 @@ export async function fetchLeetcodeUserStats(username?: string) {
       hard: 0
     };
     
-    if (responseData.matchedUserStats?.submitStats?.totalSubmissionNum) {
+    // First try to get data from acSubmissionNum (accepted submissions)
+    if (responseData.matchedUser?.submitStats?.acSubmissionNum) {
+      responseData.matchedUser.submitStats.acSubmissionNum.forEach(
+        (item: { difficulty: string; count: number }) => {
+          if (item.difficulty === 'All') {
+            solvedCounts.total = item.count;
+          } else if (item.difficulty === 'Easy') {
+            solvedCounts.easy = item.count;
+          } else if (item.difficulty === 'Medium') {
+            solvedCounts.medium = item.count;
+          } else if (item.difficulty === 'Hard') {
+            solvedCounts.hard = item.count;
+          }
+        }
+      );
+    } 
+    // Fallback to totalSubmissionNum if acSubmissionNum is not available
+    else if (responseData.matchedUserStats?.submitStats?.totalSubmissionNum) {
       responseData.matchedUserStats.submitStats.totalSubmissionNum.forEach(
         (item: { difficulty: string; count: number }) => {
           if (item.difficulty === 'All') {

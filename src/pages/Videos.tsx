@@ -505,7 +505,7 @@ const Videos = () => {
                         </Select>
                         
                         {filteredContests.length === 0 && (
-                          <Alert variant="warning" className="mt-3">
+                          <Alert className="mt-3">
                             <AlertCircle className="h-4 w-4" />
                             <AlertTitle>No past contests found</AlertTitle>
                             <AlertDescription>
@@ -569,7 +569,7 @@ const Videos = () => {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {!youtubeApiKey ? (
-                    <Alert variant="warning">
+                    <Alert>
                       <AlertCircle className="h-4 w-4" />
                       <AlertTitle>API Key Required</AlertTitle>
                       <AlertDescription>
@@ -688,6 +688,12 @@ const Videos = () => {
                     <p className="text-sm text-muted-foreground">
                       Create a YouTube API key from the <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer" className="underline">Google Cloud Console</a>
                     </p>
+                    <Alert className="mt-2">
+                      <AlertCircle className="h-4 w-4" />
+                      <AlertDescription>
+                        Make sure to enable the <strong>YouTube Data API v3</strong> in your Google Cloud project before using the API key.
+                      </AlertDescription>
+                    </Alert>
                   </div>
                   
                   <div className="space-y-2">

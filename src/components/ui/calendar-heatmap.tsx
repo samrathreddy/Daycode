@@ -404,7 +404,7 @@ export function CalendarHeatmap({ platform, className }: CalendarHeatmapProps) {
         
         {/* Color legend */}
         <div className="flex items-center text-xs text-muted-foreground">
-          <span className="mr-1">Less</span>
+          <span className="mr-1">More</span>
           
           {/* Empty color */}
           <div className="w-3 h-3 rounded-sm" 
@@ -445,7 +445,7 @@ export function CalendarHeatmap({ platform, className }: CalendarHeatmapProps) {
                    : (isDarkMode() ? "#ff8534" : "#e65c00") 
                }} />
           
-          <span className="ml-1">More</span>
+          <span className="ml-1">Less</span>
         </div>
       </div>
     </div>
