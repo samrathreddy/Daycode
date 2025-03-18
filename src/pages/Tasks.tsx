@@ -34,6 +34,9 @@ import { toast } from "@/components/ui/use-toast";
 import { useToast } from "@/components/ui/use-toast";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 
 // Timezone constant for IST
 const IST_TIMEZONE = 'Asia/Kolkata';
@@ -861,161 +864,233 @@ export default function Tasks() {
                 {editingTask ? 'Update task details' : 'Add a new task with details'}. Press enter to add tags.
               </DialogDescription>
             </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid gap-2">
-                <Label htmlFor="title">Title</Label>
-                <Input
-                  id="title"
-                  value={editingTask ? editingTask.title : newTask.title}
-                  onChange={(e) => editingTask 
-                    ? setEditingTask({ ...editingTask, title: e.target.value })
-                    : setNewTask({ ...newTask, title: e.target.value })
-                  }
-                  placeholder="Task title"
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="description">Description</Label>
-                <Textarea
-                  id="description"
-                  value={editingTask ? editingTask.description : newTask.description}
-                  onChange={(e) => editingTask 
-                    ? setEditingTask({ ...editingTask, description: e.target.value })
-                    : setNewTask({ ...newTask, description: e.target.value })
-                  }
-                  placeholder="Task description"
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="link">Link (Optional)</Label>
-                <Input
-                  id="link"
-                  value={editingTask ? editingTask.link : newTask.link}
-                  onChange={(e) => editingTask 
-                    ? setEditingTask({ ...editingTask, link: e.target.value })
-                    : setNewTask({ ...newTask, link: e.target.value })
-                  }
-                  placeholder="https://..."
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="datetime" className="flex items-center gap-2">
-                  <Calendar className="h-4 w-4" />
-                  <span>Due Date & Time</span>
-                </Label>
-                <div className="grid grid-cols-2 gap-2">
-                  <div>
-                    <Label htmlFor="date" className="text-xs text-muted-foreground mb-1">Date</Label>
-                <Input
-                      id="date"
-                      type="date"
-                      value={editingTask ? (editingTask.datetime ? editingTask.datetime.split('T')[0] : '') : (newTask.datetime ? newTask.datetime.split('T')[0] : '')}
-                      onChange={(e) => {
-                        const currentTime = editingTask 
-                          ? (editingTask.datetime ? editingTask.datetime.split('T')[1] : '00:00') 
-                          : (newTask.datetime ? newTask.datetime.split('T')[1] : '00:00');
-                        const newDateTime = `${e.target.value}T${currentTime}`;
-                        editingTask 
-                          ? setEditingTask({ ...editingTask, datetime: newDateTime })
-                          : setNewTask({ ...newTask, datetime: newDateTime });
-                      }}
-                  className="focus:ring-2 focus:ring-blue-500"
-                />
-                  </div>
-                  <div>
-                    <Label htmlFor="time" className="text-xs text-muted-foreground mb-1">Time</Label>
-                    <Input
-                      id="time"
-                      type="time"
-                      value={editingTask 
-                        ? (editingTask.datetime ? editingTask.datetime.split('T')[1] : '') 
-                        : (newTask.datetime ? newTask.datetime.split('T')[1] : '')}
-                      onChange={(e) => {
-                        const currentDate = editingTask 
-                          ? (editingTask.datetime ? editingTask.datetime.split('T')[0] : new Date().toISOString().split('T')[0]) 
-                          : (newTask.datetime ? newTask.datetime.split('T')[0] : new Date().toISOString().split('T')[0]);
-                        const newDateTime = `${currentDate}T${e.target.value}`;
-                        editingTask 
-                          ? setEditingTask({ ...editingTask, datetime: newDateTime })
-                          : setNewTask({ ...newTask, datetime: newDateTime });
-                      }}
-                      className="focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                </div>
-                <p className="text-xs text-muted-foreground">Tasks with time will have a reminder option</p>
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="status">Status</Label>
-                <Select 
-                  value={editingTask ? editingTask.status : newTask.status} 
-                  onValueChange={(value: TaskStatus) => editingTask 
-                    ? setEditingTask({ ...editingTask, status: value })
-                    : setNewTask({ ...newTask, status: value })
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="todo">To Do</SelectItem>
-                    <SelectItem value="in_progress">In Progress</SelectItem>
-                    <SelectItem value="completed">Completed</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="tags" className="flex items-center gap-2">
-                  <TagIcon className="h-4 w-4" />
-                  <span>Tags</span>
-                </Label>
-                <div className="flex flex-wrap gap-2 mb-2 min-h-8 p-1 border rounded-md">
-                  {(editingTask ? editingTask.editingTags : newTask.tags)?.map((tag) => (
-                    <Badge 
-                      key={tag} 
-                      variant="secondary"
-                      className="flex items-center gap-1"
-                    >
-                      {tag}
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          editingTask 
-                            ? handleEditRemoveTag(tag, e)
-                            : handleRemoveTag(tag, e);
-                        }}
-                        className="ml-1 hover:text-destructive"
-                      >
-                        ×
-                      </button>
-                    </Badge>
-                  ))}
-                </div>
-                <div className="relative">
+            <ScrollArea className="max-h-[60vh]">
+              <div className="grid gap-4 py-4 px-1">
+                <div className="grid gap-2">
+                  <Label htmlFor="title">Title</Label>
                   <Input
-                    id="tags"
-                    value={editingTask ? editTagInput : newTagInput}
-                    onChange={(e) => handleTagInput(e.target.value, !!editingTask)}
-                    onKeyDown={editingTask ? handleEditAddTag : handleAddTag}
-                    placeholder="Type tag and press enter"
+                    id="title"
+                    value={editingTask ? editingTask.title : newTask.title}
+                    onChange={(e) => editingTask 
+                      ? setEditingTask({ ...editingTask, title: e.target.value })
+                      : setNewTask({ ...newTask, title: e.target.value })
+                    }
+                    placeholder="Task title"
                   />
-                  {tagSuggestions.length > 0 && (
-                    <div className="absolute top-full left-0 right-0 mt-1 bg-background border rounded-md shadow-lg z-10">
-                      {tagSuggestions.map((tag) => (
-                        <button
-                          key={tag}
-                          className="w-full px-3 py-2 text-left hover:bg-accent transition-colors"
-                          onClick={() => addTag(tag, !!editingTask)}
-                        >
-                          {tag}
-                        </button>
-                      ))}
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="description">Description</Label>
+                  <Textarea
+                    id="description"
+                    value={editingTask ? editingTask.description : newTask.description}
+                    onChange={(e) => editingTask 
+                      ? setEditingTask({ ...editingTask, description: e.target.value })
+                      : setNewTask({ ...newTask, description: e.target.value })
+                    }
+                    placeholder="Task description"
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="link">Link (Optional)</Label>
+                  <Input
+                    id="link"
+                    value={editingTask ? editingTask.link : newTask.link}
+                    onChange={(e) => editingTask 
+                      ? setEditingTask({ ...editingTask, link: e.target.value })
+                      : setNewTask({ ...newTask, link: e.target.value })
+                    }
+                    placeholder="https://..."
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="datetime" className="flex items-center gap-2">
+                    <Calendar className="h-4 w-4" />
+                    <span>Due Date & Time</span>
+                  </Label>
+                  
+                  <div className="flex flex-col gap-3 sm:flex-row sm:gap-2">
+                    {/* Date Picker */}
+                    <div className="w-full sm:w-3/5">
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            className={cn(
+                              "w-full justify-start text-left font-normal",
+                              !editingTask && !newTask.datetime && "text-muted-foreground"
+                            )}
+                          >
+                            <Calendar className="mr-2 h-4 w-4" />
+                            {editingTask ? 
+                              (editingTask.datetime ? format(new Date(editingTask.datetime.split('T')[0]), "PPP") : "Select date") : 
+                              (newTask.datetime ? format(new Date(newTask.datetime.split('T')[0]), "PPP") : "Select date")
+                            }
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <CalendarComponent
+                            mode="single"
+                            selected={editingTask 
+                              ? (editingTask.datetime ? new Date(editingTask.datetime) : undefined)
+                              : (newTask.datetime ? new Date(newTask.datetime) : undefined)
+                            }
+                            onSelect={(date) => {
+                              if (!date) return;
+                              
+                              const currentTime = editingTask 
+                                ? (editingTask.datetime ? editingTask.datetime.split('T')[1] : '00:00') 
+                                : (newTask.datetime ? newTask.datetime.split('T')[1] : '00:00');
+                              
+                              const formattedDate = date.toISOString().split('T')[0];
+                              const newDateTime = `${formattedDate}T${currentTime}`;
+                              
+                              editingTask 
+                                ? setEditingTask({ ...editingTask, datetime: newDateTime })
+                                : setNewTask({ ...newTask, datetime: newDateTime });
+                            }}
+                            initialFocus
+                          />
+                        </PopoverContent>
+                      </Popover>
                     </div>
-                  )}
+                    
+                    {/* Time Picker */}
+                    <div className="w-full sm:w-2/5">
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            className={cn(
+                              "w-full justify-start text-left font-normal",
+                              !editingTask && !newTask.datetime && "text-muted-foreground"
+                            )}
+                          >
+                            <Clock className="mr-2 h-4 w-4" />
+                            {editingTask ? 
+                              (editingTask.datetime ? editingTask.datetime.split('T')[1] : "Select time") : 
+                              (newTask.datetime ? newTask.datetime.split('T')[1] : "Select time")
+                            }
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-48 p-0">
+                          <ScrollArea className="h-[200px]">
+                            <div className="grid grid-cols-1 gap-1 p-2">
+                              {Array.from({ length: 48 }, (_, i) => {
+                                const hour = Math.floor(i / 2).toString().padStart(2, '0');
+                                const minute = i % 2 === 0 ? '00' : '30';
+                                return `${hour}:${minute}`;
+                              }).map((time) => {
+                                const isSelected = editingTask 
+                                  ? (editingTask.datetime?.split('T')[1] === time)
+                                  : (newTask.datetime?.split('T')[1] === time);
+                                
+                                return (
+                                  <Button
+                                    key={time}
+                                    variant={isSelected ? "secondary" : "ghost"}
+                                    className="justify-start font-normal"
+                                    onClick={() => {
+                                      const currentDate = editingTask 
+                                        ? (editingTask.datetime ? editingTask.datetime.split('T')[0] : new Date().toISOString().split('T')[0]) 
+                                        : (newTask.datetime ? newTask.datetime.split('T')[0] : new Date().toISOString().split('T')[0]);
+                                      
+                                      const newDateTime = `${currentDate}T${time}`;
+                                      
+                                      editingTask 
+                                        ? setEditingTask({ ...editingTask, datetime: newDateTime })
+                                        : setNewTask({ ...newTask, datetime: newDateTime });
+                                    }}
+                                  >
+                                    {time}
+                                  </Button>
+                                );
+                              })}
+                            </div>
+                          </ScrollArea>
+                        </PopoverContent>
+                      </Popover>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center mt-1">
+                    <div className="flex h-5 items-center space-x-2 text-muted-foreground text-xs">
+                      <Clock className="h-3 w-3" />
+                      <p>Tasks with time will have a reminder option</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="status">Status</Label>
+                  <Select 
+                    value={editingTask ? editingTask.status : newTask.status} 
+                    onValueChange={(value: TaskStatus) => editingTask 
+                      ? setEditingTask({ ...editingTask, status: value })
+                      : setNewTask({ ...newTask, status: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="todo">To Do</SelectItem>
+                      <SelectItem value="in_progress">In Progress</SelectItem>
+                      <SelectItem value="completed">Completed</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="tags" className="flex items-center gap-2">
+                    <TagIcon className="h-4 w-4" />
+                    <span>Tags</span>
+                  </Label>
+                  <div className="flex flex-wrap gap-2 mb-2 min-h-8 p-1 border rounded-md">
+                    {(editingTask ? editingTask.editingTags : newTask.tags)?.map((tag) => (
+                      <Badge 
+                        key={tag} 
+                        variant="secondary"
+                        className="flex items-center gap-1"
+                      >
+                        {tag}
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            editingTask 
+                              ? handleEditRemoveTag(tag, e)
+                              : handleRemoveTag(tag, e);
+                          }}
+                          className="ml-1 hover:text-destructive"
+                        >
+                          ×
+                        </button>
+                      </Badge>
+                    ))}
+                  </div>
+                  <div className="relative">
+                    <Input
+                      id="tags"
+                      value={editingTask ? editTagInput : newTagInput}
+                      onChange={(e) => handleTagInput(e.target.value, !!editingTask)}
+                      onKeyDown={editingTask ? handleEditAddTag : handleAddTag}
+                      placeholder="Type tag and press enter"
+                    />
+                    {tagSuggestions.length > 0 && (
+                      <div className="absolute top-full left-0 right-0 mt-1 bg-background border rounded-md shadow-lg z-10">
+                        {tagSuggestions.map((tag) => (
+                          <button
+                            key={tag}
+                            className="w-full px-3 py-2 text-left hover:bg-accent transition-colors"
+                            onClick={() => addTag(tag, !!editingTask)}
+                          >
+                            {tag}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
+            </ScrollArea>
             <DialogFooter>
               <Button variant="outline" onClick={() => {
                 setIsDialogOpen(false);
@@ -1140,8 +1215,8 @@ export default function Tasks() {
                 onSortChange={toggleCompletedSort}
               />
             )}
-                </div>
-          </DragDropContext>
+          </div>
+        </DragDropContext>
       </div>
     </div>
   );

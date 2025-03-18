@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 export default function Navbar() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const [username, setUsername] = useState<string | null>(null);
   const navigate = useNavigate();
 
@@ -39,6 +39,10 @@ export default function Navbar() {
     { name: "Settings", path: "/settings", icon: Settings },
     { name: "Help", path: "/help", icon: LifeBuoy }
   ];
+
+  const handleNavLinkClick = () => {
+    setOpen(false); // Close the mobile menu when a link is clicked
+  };
 
   return (
     <nav className="border-b bg-background sticky top-0 z-40">
@@ -72,7 +76,7 @@ export default function Navbar() {
         <div className="flex flex-1 justify-end items-center space-x-2">          
           <ThemeToggle />
           
-          <Sheet>
+          <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild className="md:hidden">
               <Button variant="ghost" size="icon" className="md:hidden">
                 <Menu className="h-5 w-5" />
@@ -93,7 +97,7 @@ export default function Navbar() {
                           : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
                       )
                     }
-                    onClick={() => setMobileMenuOpen(false)}
+                    onClick={handleNavLinkClick}
                   >
                     <item.icon className="mr-2 h-5 w-5" />
                     {item.name}
