@@ -1,16 +1,14 @@
 {
     "rewrites": [
-      {
-        "source": "/(.*)",
-        "destination": "/"
-      }
+      { "source": "/contest", "destination": "/" },
+      { "source": "/videos", "destination": "/" },
+      { "source": "/hackathons", "destination": "/" },
+      { "source": "/settings", "destination": "/" },
+      { "source": "/(.*)", "destination": "/" }
     ],
     "routes": [
-      {
-        "src": "/[^.]+",
-        "dest": "/",
-        "status": 200
-      }
+      { "handle": "filesystem" },
+      { "src": "/(.*)", "dest": "/" }
     ],
     "cleanUrls": true,
     "trailingSlash": false,
