@@ -72,7 +72,7 @@ export default function Help() {
             }
           ],
           footer: {
-            text: "Sent from Track My Contests App"
+            text: "Sent from Day Code App"
           },
           timestamp: new Date().toISOString()
         }]
@@ -123,7 +123,7 @@ export default function Help() {
             <CardTitle>Get Help / Provide Feedback</CardTitle>
           </div>
           <CardDescription className="space-y-2">
-            <p>Hello! I'm Samrath, the developer of Track My Contests. If you have any questions, feedback, or need assistance with the app, please fill out the form below.</p>
+            <p>Hello! I'm Samrath, the developer of Day Code. If you have any questions, feedback, or need assistance with the app, please fill out the form below.</p>
             <p className="flex flex-wrap items-center gap-4">
               Connect with me on:
               <a 

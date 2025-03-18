@@ -408,6 +408,22 @@ const Videos = () => {
                     </Button>
                   </div>
                   
+                  {/* Smart Match Description */}
+                  <Alert className="bg-primary/5 border-primary/10">
+                    <Zap className="h-4 w-4 text-primary" />
+                    <AlertTitle>What is Smart Match?</AlertTitle>
+                    <AlertDescription className="text-xs">
+                      Smart Match uses String Match to automatically find solution videos for your coding contests. It works by:
+                      <ul className="list-disc pl-5 mt-1 space-y-1">
+                        <li>Searching YouTube Playlist for each contest name and platform</li>
+                        <li>Analyzing video titles and descriptions to find relevant solutions</li>
+                        <li>Linking the most appropriate video for each contest from the playlist</li>
+                        <li>Respecting your existing manual links (won't override them)</li>
+                      </ul>
+                      The feature requires a valid YouTube API key and may take a moment to process all contests. Results will show the percentage of contests successfully matched with solutions.
+                    </AlertDescription>
+                  </Alert>
+                  
                   {/* Smart Match Stats */}
                   {smartMatchStats && (
                     <Alert className="mt-4">
@@ -581,10 +597,10 @@ const Videos = () => {
                       <Loader2 className="h-8 w-8 animate-spin text-primary" />
                     </div>
                   ) : videos.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center py-10 space-y-3">
-                      <Youtube className="h-8 w-8 text-muted-foreground" />
-                      <p className="text-muted-foreground">No videos loaded</p>
-                      <Button onClick={() => fetchVideos()}>Load Videos</Button>
+                    <div className="flex flex-col items-center h-64 bg-muted/10 rounded-lg pt-32">
+                      <Youtube className="h-12 w-12 text-muted-foreground" />
+                      <p className="text-muted-foreground font-medium mt-4">No videos loaded</p>
+                      <Button onClick={() => fetchVideos()} className="mt-5">Load Videos</Button>
                     </div>
                   ) : (
                     <>
