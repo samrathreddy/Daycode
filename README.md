@@ -1,81 +1,52 @@
-# Coding Contest Tracker
+# Day Code
 
-A sophisticated web application that aggregates and tracks programming contest schedules from major competitive programming platforms in one place as well as provides a platform specific tutorial videos.
+A comprehensive web application that aggregates and tracks programming contest schedules from major competitive programming platforms, displays hackathons, provides tutorial videos, and helps you manage your coding tasks - all in one place.
+
+## 📚 Table of Contents
+
+1. [Overview](#-overview)
+2. [Features](#-features)
+3. [Live Demo & Resources](#-live-demo--resources)
+4. [Getting Started](#-getting-started)
+   - [Prerequisites](#prerequisites)
+   - [Installation](#installation)
+   - [Running the Application](#running-the-application)
+5. [Project Structure](#-project-structure)
+6. [Core Functionalities](#-core-functionalities)
+   - [Contest Tracking](#contest-tracking)
+   - [Hackathon Discovery](#hackathon-discovery)
+   - [Task Management](#task-management)
+   - [Video Tutorials](#video-tutorials)
+7. [Technology Stack](#-technology-stack)
+8. [API Integrations](#-api-integrations)
+9. [Challenges & Solutions](#-challenges--solutions)
+10. [Future Enhancements](#-future-enhancements)
+11. [Contributing](#-contributing)
 
 ## 📋 Overview
 
-Contest Tracker is a comprehensive solution designed to help competitive programmers stay on top of upcoming contests across multiple platforms. The application fetches real-time contest data, and offers a unified dashboard to manage participation in competitive programming events and watch tutorial videos for the same.
-
-## 🔗 Links & Resources
-
-- **Demo Video**: [Watch the project demo](https://drive.google.com/file/d/1oItFL2gzH8TJu2gmbbQxDhGzSV2JGnl4/view?usp=sharing)
-- **Repository**: [Checkout the code](https://github.com/samrathreddy/Coding-Contest-Tracker)
-- **Developer**: [Samrath Reddy](https://www.linkedin.com/in/samrath-reddy/)
+Day Code serves as a centralized hub for competitive programmers and developers to stay organized and informed about upcoming coding competitions and hackathons. The application fetches real-time contest data, displays relevant tutorial videos, and provides a robust task management system to help users plan their competitive programming journey effectively.
 
 ## ✨ Features
+- **Coding Activiyt**: View activity from LeetCode & Github at one place
+- **Contest Aggregation**: View contests from LeetCode, Codeforces, and CodeChef in one place
+- **Hackathon Discovery**: Stay updated with the latest hackathon opportunities from Devpost
+- **Task Management**: Organize your coding tasks with priorities, due dates, and status tracking
+- **Tutorial Videos**: Access platform-specific tutorial videos for contests
+- **Real-time Updates**: Get the most current contest schedules using platform APIs
+- **Contest Filtering**: Sort and filter contests by platform, date, duration, and type
 
-- **Multi-Platform Integration**: Aggregates contests from LeetCode, Codeforces, Codechef.
-- **Real-time Updates**: Leverages platform APIs to provide the most current contest schedules.
-- **Contest Filtering**: Sort and filter contests by platform, date, duration, and type.
-- **Smart Match**: Automatically matched with the correct tutorial video for the contest from the respective platform playlist.
-- **Reminder**: Integrates with Google Calendar to remind you of the upcoming contests.
-- **Theme Support**: Elegant light and dark mode for comfortable viewing in any environment.
-- **Video Integration**: Watch contest-related tutorials and explanations directly within the app.
-- **Responsive Design**: Full functionality across desktop and mobile devices.
+## 🔗 Live Demo & Resources
 
-## 🛠️ Technical Architecture
-
-### Frontend
-
-- **Framework**: React.js with TypeScript for type safety
-- **State Management**: React Context API for global state
-- **Styling**: CSS Modules/Tailwind CSS for component-based styling with theme support
-- **Routing**: React Router for navigation
-
-### Backend Integration
-
-- **API Layer**: Custom API service modules for each platform
-- **Data Handling**: Type-safe contest object models
-- **Error Management**: Robust error handling with fallback mechanisms
-
-## 🔌 APIs Used in the Project
-
-The application integrates with the following APIs:
-
-- **LeetCode**: `https://leetcode.com/graphql?operationName=upcomingContests&query=query upcomingContests { upcomingContests{ title titleSlug startTime duration __typename }}`
-- **Codeforces**: `https://codeforces.com/api/contest.list`
-- **Codechef**: `https://www.codechef.com/api/list/contests/all?sort_by=START&sorting_order=asc&offset=0&mode=all`
-- **YouTube**: `https://www.googleapis.com/youtube/v3/search` (For contest tutorials and video content)
-- **Google Calendar**: `https://calendar.google.com/calendar/r/eventedit?action=TEMPLATE&text=${encodedTitle}&details=${encodedDescription}&location=${encodedLocation}&dates=${dates}&gm=false&reminders=VALUE=popup:${reminderMinutes}` (For reminders)
-- **CORS Proxy**: `https://api.allorigins.win/raw` (Used to bypass CORS restrictions)
-
-Note: For LeetCode past contests, custom date calculation is used as no direct API is available.
-
-### Time Zone Handling
-
-The application carefully manages time zones to ensure contest times are displayed correctly:
-
-- All internal time storage uses ISO strings
-- Conversion to local time zone for display
-- Proper calculation of contest duration and status
-
-### Theme Management
-
-The application implements a comprehensive theming system:
-
-- **Persistent Settings**: Remembers user's theme preference across sessions
-- **Smooth Transitions**: Elegant transitions between themes for better user experience and used lazy loading for performance
-
-### Video Content Integration
-
-Leveraging the YouTube API v3, the application provides:
-
-- **Relevant Tutorials**: Fetches contest-specific tutorial videos from the coding platform spcific playlist
-- **Custom Playlists**: Save videos attaching to the contest for future reference
+- **Demo Video**: [Watch the project demo](https://www.linkedin.com/posts/samrath-reddy_attention-coders-whether-youre-a-dsa-activity-7307755723109580800-0b-H?utm_source=share&utm_medium=member_desktop&rcm=ACoAAD2VzSEBqolc3AY61MDI9xdX1-_3h_Dtyb0)
+- **Repository**: [Checkout the code](https://github.com/samrathreddy/Daycode)
+- **Developer**: [Samrath Reddy](https://www.linkedin.com/in/samrath-reddy/)
 
 ## 🚀 Getting Started
 
 ### Prerequisites
+
+Before installing the application, make sure you have the following installed:
 
 - Node.js (v14+)
 - npm or yarn
@@ -85,19 +56,20 @@ Leveraging the YouTube API v3, the application provides:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/track-my-contests.git
-   cd track-my-contests
+   git clone https://github.com/samrathreddy/Coding-Contest-Tracker.git
+   cd Coding-Contest-Tracker
    ```
 
 2. Install dependencies:
-
    ```bash
    npm install
    # or
    yarn install
    ```
 
-3. Start the development server:
+### Running the Application
+
+1. Start the development server:
 
    ```bash
    npm run dev
@@ -105,44 +77,143 @@ Leveraging the YouTube API v3, the application provides:
    yarn dev
    ```
 
-4. Open `http://localhost:8080` in your browser.
+2. Open your browser and navigate to `http://localhost:5173` (or the port shown in your terminal)
 
-## 🧪 Testing
+## 📂 Project Structure
 
-Run the test suite with:
+For beginners, here's a breakdown of the key directories and files:
 
-```bash
-npm test
-# or
-yarn test
+```
+/
+├── public/              # Static assets
+├── src/                 # Source code
+│   ├── components/      # Reusable UI components
+│   ├── hooks/           # Custom React hooks
+│   ├── lib/             # Library configurations
+│   ├── pages/           # Application pages
+│   │   ├── Contest.tsx  # Contest tracking page
+│   │   ├── Hackathons.tsx # Hackathons page
+│   │   ├── Home.tsx     # Landing page
+│   │   ├── Tasks.tsx    # Task management page
+│   │   └── Videos.tsx   # Tutorial videos page
+│   ├── services/        # Service integrations
+│   ├── utils/           # Utility functions
+│   │   ├── api/         # API integration modules
+│   │   ├── constants.ts # Application constants
+│   │   └── types.ts     # TypeScript type definitions
+│   ├── App.tsx          # Main application component
+│   └── main.tsx         # Application entry point
+├── package.json         # Dependencies and scripts
+├── tailwind.config.ts   # Tailwind CSS configuration
+└── vite.config.ts       # Vite build configuration
 ```
 
-## 🤔 Challenges and Solutions
+## 🔍 Core Functionalities
+
+### Contest Tracking
+
+The application aggregates programming contests from multiple platforms:
+
+- **LeetCode**: Weekly and biweekly contests
+- **Codeforces**: Regular, educational, and special contests
+- **CodeChef**: Long challenges, cook-offs, and lunchtime contests
+
+Each contest displays:
+
+- Name and platform
+- Start and end times (converted to your local timezone)
+- Duration
+- Status (upcoming, ongoing, or past)
+- Direct link to the contest page
+
+### Hackathon Discovery
+
+Stay updated with the latest hackathon opportunities:
+
+- Browse hackathons from Devpost
+- View details including themes, prizes, and submission deadlines
+- Filter by online/in-person, category, and timeframe
+
+### Task Management
+
+Organize your coding practice and contest preparation:
+
+- Create tasks with titles, descriptions, and due dates
+- Set priorities (low, medium, high)
+- Track status (todo, in progress, completed)
+- Apply tags for better organization
+- Filter and search through tasks
+
+### Video Tutorials
+
+Access platform-specific tutorial videos directly within the app:
+
+- Watch contest explanations and solutions
+- Learn problem-solving techniques
+- Discover competitive programming tips and tricks
+
+## 🛠️ Technology Stack
+
+### Frontend
+
+- **Framework**: React.js with TypeScript
+- **Build Tool**: Vite
+- **State Management**: React Context API and React Query
+- **Styling**: Tailwind CSS with shadcn/ui components
+- **Routing**: React Router v6
+- **Form Handling**: React Hook Form with Zod validation
+- **Date Handling**: date-fns and date-fns-tz
+- **HTTP Client**: Axios
+
+## 🔌 API Integrations
+
+The application integrates with the following APIs:
+
+- **LeetCode**: GraphQL API for contest data
+- **Codeforces**: REST API for contest listings
+- **CodeChef**: REST API for contest information
+- **Devpost**: For hackathon listings
+- **YouTube**: For tutorial videos and content
+
+## 🤔 Challenges & Solutions
 
 ### CORS Restrictions
 
 **Challenge**: Many competitive programming platforms don't provide CORS headers, preventing direct API access from browsers.
 
-**Solution**: Implemented a proxy-based fetching strategy using `api.allorigins.win` to securely access platform data without compromising user experience.
+**Solution**: Implemented proxy-based fetching strategies to securely access platform data.
 
-### Date Calculation Complexity
+### Time Zone Management
 
-**Challenge**: Handling recurring contest patterns (weekly, biweekly) with different time zones.
+**Challenge**: Displaying contest times correctly across different time zones.
 
-**Solution**: Developed a sophisticated date calculation system that correctly determines the next contest dates based on historical patterns, even when API data is unavailable.
+**Solution**: Used date-fns-tz for proper time zone conversions, storing all times as ISO strings internally and converting to local time for display.
+
+### User Experience on Mobile
+
+**Challenge**: Creating a seamless experience across desktop and mobile devices.
+
+**Solution**: Implemented a responsive design with optimized navigation that adapts to different screen sizes.
 
 ## 🔮 Future Enhancements
+
 - User authentication for personalized experiences
 - Contest performance tracking and statistics
-- Community features like discussion boards for each contest
+- Community features like discussion boards
+- Integration with more competitive programming platforms
+- Enhanced notification system with email/push alerts
+- Calendar integration for contest reminders
 
-## 🙋‍♂️ Assignment Information
+## 🤝 Contributing
 
-This project was developed as part of a programming assignment FOR TLE Eliminators within 24 hours to demonstrate hands-on skills in:
+Contributions are welcome! If you'd like to contribute:
 
-- Frontend development with React and TypeScript
-- API integration techniques
-- Handling complex asynchronous operations
-- Clean code practices and comprehensive documentation
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-Feel free to contribute to the project by opening issues and pull requests.
+---
+
+Built with ❤️ by [Samrath Reddy](https://www.linkedin.com/in/samrath-reddy/)
