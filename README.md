@@ -77,7 +77,7 @@ Before installing the application, make sure you have the following installed:
    yarn dev
    ```
 
-2. Open your browser and navigate to `http://localhost:5173` (or the port shown in your terminal)
+2. Open your browser and navigate to `http://localhost:8080` (or the port shown in your terminal)
 
 ## 📂 Project Structure
 

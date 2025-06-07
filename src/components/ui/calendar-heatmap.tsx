@@ -10,6 +10,11 @@ import "react-calendar-heatmap/dist/styles.css";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { toast } from "@/components/ui/use-toast";
 
 interface CalendarHeatmapProps {
   platform: "github" | "leetcode";
@@ -24,7 +29,11 @@ export function CalendarHeatmap({ platform, className }: CalendarHeatmapProps) {
   const [maxStreak, setMaxStreak] = useState(0);
   
   // Get username from localStorage
-  const username = localStorage.getItem(`${platform}-username`);
+  const [username, setUsername] = useState<string | null>(localStorage.getItem(`${platform}-username`));
+  
+  // State for inline username input
+  const [tempUsername, setTempUsername] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -71,7 +80,8 @@ export function CalendarHeatmap({ platform, className }: CalendarHeatmapProps) {
     // Add event listener for storage changes
     const handleStorageChange = (e) => {
       if (e.key === `${platform}-username`) {
-        fetchData();
+        const newUsername = e.newValue;
+        setUsername(newUsername);
       }
     };
     
@@ -348,21 +358,130 @@ export function CalendarHeatmap({ platform, className }: CalendarHeatmapProps) {
     return false;
   };
   
+  const saveUsername = async () => {
+    if (!tempUsername.trim()) {
+      toast({
+        title: `${platform === 'github' ? 'GitHub' : 'LeetCode'} Username Required`,
+        description: "Please enter a valid username",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsSaving(true);
+    
+    try {
+      // Extract username if a URL was pasted
+      let finalUsername = tempUsername.trim();
+      
+      if (platform === 'github' && finalUsername.includes('github.com/')) {
+        try {
+          const url = new URL(finalUsername.includes('http') ? finalUsername : `https://${finalUsername}`);
+          const pathParts = url.pathname.split('/').filter(Boolean);
+          if (pathParts.length > 0) {
+            finalUsername = pathParts[0];
+          }
+        } catch (error) {
+          // Not a valid URL, keep as is
+        }
+      } else if (platform === 'leetcode' && finalUsername.includes('leetcode.com/')) {
+        try {
+          const url = new URL(finalUsername.includes('http') ? finalUsername : `https://${finalUsername}`);
+          const pathParts = url.pathname.split('/').filter(Boolean);
+          
+          if (pathParts.length > 0) {
+            if (pathParts[0] === 'u' && pathParts.length > 1) {
+              finalUsername = pathParts[1];
+            } else {
+              finalUsername = pathParts[0];
+            }
+          }
+        } catch (error) {
+          // Not a valid URL, keep as is
+        }
+      }
+      
+      // Save to localStorage
+      localStorage.setItem(`${platform}-username`, finalUsername);
+      
+      // Update state
+      setUsername(finalUsername);
+      setTempUsername("");
+      
+      // Trigger storage event for other components
+      window.dispatchEvent(new Event('storage'));
+      
+      toast({
+        title: `${platform === 'github' ? 'GitHub' : 'LeetCode'} Username Saved`,
+        description: `Your ${platform} username has been saved and data will be loaded.`,
+      });
+      
+    } catch (error) {
+      toast({
+        title: "Save Failed",
+        description: "There was an error saving your username. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+  
   if (isLoading) {
     return <Skeleton className="w-full h-32" />;
   }
   
   if (error && !username) {
     return (
-      <Alert variant="destructive">
-        <AlertCircle className="h-4 w-4" />
-        <AlertDescription>
-          No {platform} username found. Please configure in{" "}
-          <Link to="/settings" className="font-medium underline hover:text-primary">
-            Settings
-          </Link>.
-        </AlertDescription>
-      </Alert>
+      <Card className="w-full">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <AlertCircle className="h-5 w-5 text-orange-500" />
+            Set up {platform === 'github' ? 'GitHub' : 'LeetCode'} Integration
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Enter your {platform === 'github' ? 'GitHub' : 'LeetCode'} username to start tracking your activity.
+          </p>
+          
+          <div className="space-y-2">
+            <Label htmlFor={`${platform}-username-input`}>
+              {platform === 'github' ? 'GitHub' : 'LeetCode'} Username
+            </Label>
+            <Input
+              id={`${platform}-username-input`}
+              placeholder={platform === 'github' 
+                ? "Enter your GitHub username or profile URL"
+                : "Enter your LeetCode username or profile URL"
+              }
+              value={tempUsername}
+              onChange={(e) => setTempUsername(e.target.value)}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  saveUsername();
+                }
+              }}
+            />
+            <p className="text-xs text-muted-foreground">
+              {platform === 'github' 
+                ? 'Example: "username" or "https://github.com/username"'
+                : 'Example: "username" or "https://leetcode.com/username"'
+              }
+            </p>
+          </div>
+          
+          <div className="flex justify-between items-center">
+            <Button onClick={saveUsername} disabled={isSaving}>
+              {isSaving ? "Saving..." : "Save Username"}
+            </Button>
+            
+            <Link to="/settings" className="text-sm text-muted-foreground hover:text-primary underline">
+              Or configure in Settings
+            </Link>
+          </div>
+        </CardContent>
+      </Card>
     );
   }
   
