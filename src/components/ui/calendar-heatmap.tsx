@@ -434,13 +434,13 @@ export function CalendarHeatmap({ platform, className }: CalendarHeatmapProps) {
   if (error && !username) {
     return (
       <Card className="w-full">
-        <CardHeader>
+        {/* <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <AlertCircle className="h-5 w-5 text-orange-500" />
             Set up {platform === 'github' ? 'GitHub' : 'LeetCode'} Integration
           </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
+        </CardHeader> */}
+        <CardContent className="space-y-4 p-4">
           <p className="text-sm text-muted-foreground">
             Enter your {platform === 'github' ? 'GitHub' : 'LeetCode'} username to start tracking your activity.
           </p>
